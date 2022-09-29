@@ -45,8 +45,11 @@ export function isValidRegEx(description: string, pattern: RegExp): Boolean {
 export function getPullRequestDescription() {
     let pull_request = github.context.payload.pull_request;
     core.debug(`Pull Request: ${JSON.stringify(github.context.payload.pull_request)}`);
-    if (pull_request == undefined || pull_request.body == undefined) {
+    if (pull_request == undefined) {
         throw new Error("This action should only be run with Pull Request Events");
+    }
+    if (pull_request.body == undefined) {
+        return "";
     }
     return pull_request.body;
 }

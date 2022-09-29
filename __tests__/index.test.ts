@@ -36,12 +36,13 @@ describe("index", () => {
             expect(getPullRequestDescription).toThrowError("This action should only be run with Pull Request Events");
         });
 
-        it("throws an error if the description is not provided", () => {
+        it("returns empty strig if the description is not provided", () => {
             process.env["GITHUB_EVENT_PATH"] = __dirname + "/event-without-a-body.json";
             github.context.payload = JSON.parse(
                 readFileSync(process.env.GITHUB_EVENT_PATH, { encoding: 'utf8' })
             );
-            expect(getPullRequestDescription).toThrowError("This action should only be run with Pull Request Events");
+            const description = getPullRequestDescription();
+            expect(description).toBe("");
         });
     });
 
@@ -50,6 +51,12 @@ describe("index", () => {
             let description = "https://app.asana.com/0/269147081508722/1202858895894385/f"
             let pattern = new RegExp(/(https:\/\/)?app.asana.com\/0\/(search\/|inbox\/)?\d+\/\d+(\/\d+)?/i)
             expect(isValidRegEx(description, pattern)).toBe(true);
+        });
+
+        it("doesn't incorrectly validate an empty description field", () => {
+            let description = ""
+            let pattern = new RegExp(/(https:\/\/)?app.asana.com\/0\/(search\/|inbox\/)?\d+\/\d+(\/\d+)?/i)
+            expect(isValidRegEx(description, pattern)).toBe(false);
         });
     });
 })
