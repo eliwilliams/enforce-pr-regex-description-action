@@ -1,6 +1,6 @@
-# Enforce Pull Request Description RegEx Checker
+# Enforce Pull Request Description RegEx Action
 
-This action checks that a pull request description matches a given regular expression.
+This GitHub Action checks that a pull request description matches a given regular expression.
 
 ## Inputs
 
